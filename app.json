@@ -10,11 +10,6 @@
     "runtimeVersion": {
       "policy": "appVersion"
     },
-    "locales": {
-      "en": "./i18n/locales/english.json",
-      "de": "./i18n/locales/german.json",
-      "ar": "./i18n/locales/arabic.json"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "stripe.app.com",
