@@ -1,0 +1,65 @@
+{
+  "expo": {
+    "name": "Stripe-app",
+    "slug": "stripe-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "stripe-app",
+    "userInterfaceStyle": "automatic",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "locales": {
+      "en": "./i18n/locales/english.json",
+      "de": "./i18n/locales/german.json",
+      "ar": "./i18n/locales/arabic.json"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "stripe.app.com",
+      "infoPlist": {
+        "CFBundleAllowMixedLocalizations": true
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "server",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "origin": "https://e"
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ],
+      "expo-font",
+      [
+        "@stripe/stripe-react-native",
+        {
+          // "merchantIdentifier": "merchant.REPLACE_ME",
+          "publishableKey": "pk_test_51QmzT9JMmzXmYWzyERxSQjWVLN2E5bArhOw8Jw2rfK8bVh5a6Vy5BnIQjtL3sZLPjziE1aVlAlcPwDTfURydR0Rt00bfBm0ZCV"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
