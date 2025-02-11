@@ -35,6 +35,10 @@ const DonatePage = () => {
     }
   }, [showWebview]);
 
+  useEffect(() => {
+    webviewRef.current?.injectJavaScript(`window.amount = ${donationAmount};`);
+  }, [donationAmount]);
+
   return (
     <View style={styles.content}>
       <Text style={styles.title}>
