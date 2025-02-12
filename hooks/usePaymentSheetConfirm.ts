@@ -54,7 +54,7 @@ const usePaymentSheetConfirm = ({ amount }: Props) => {
         paymentMethodId: paymentMethod?.id,
       });
       if (!clientSecret) {
-        throw new Error("Failed to get clientSecret");
+        throw new Error("Failed to retrieve ClientSecret");
       }
 
       const { error, paymentIntent } = await confirmPayment(clientSecret, {

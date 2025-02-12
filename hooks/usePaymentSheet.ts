@@ -4,13 +4,13 @@ import { useCallback, useState } from "react";
 import { useStripe } from "@stripe/stripe-react-native";
 
 type FetchPaymentSheetData = (params: { amount: number }) => Promise<{
-  paymentIntent: string;
+  clientSecret: string;
   ephemeralKey: string;
-  customer: string;
+  customerId: string;
 }>;
 
 const fetchPaymentSheetData: FetchPaymentSheetData = async ({ amount }) => {
-  const response = await fetch(`/api/payment-sheet`, {
+  const response = await fetch(`/api/payment-create`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ amount }),
@@ -36,15 +36,15 @@ const usePaymentSheet = ({ amount }: Props) => {
   const initializePaymentSheet = useCallback(async () => {
     setLoading(true);
     try {
-      const { paymentIntent, ephemeralKey, customer } =
+      const { clientSecret, ephemeralKey, customerId } =
         await fetchPaymentSheetData({ amount });
 
       // Use Mock payment data: https://docs.stripe.com/payments/accept-a-payment?platform=react-native&ui=payment-sheet#react-native-test
       const { error: stripeError } = await initPaymentSheet({
         merchantDisplayName: "Stripe-app",
-        customerId: customer,
+        customerId,
         customerEphemeralKeySecret: ephemeralKey,
-        paymentIntentClientSecret: paymentIntent,
+        paymentIntentClientSecret: clientSecret,
         // Set `allowsDelayedPaymentMethods` to true if your business can handle payment
         // methods that complete payment after a delay, like SEPA Debit and Sofort.
         // allowsDelayedPaymentMethods: true,

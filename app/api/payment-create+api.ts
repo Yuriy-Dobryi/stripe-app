@@ -11,15 +11,13 @@ export const paymentSchema = z.object({
 export async function POST(req: Request) {
   const { error, data } = await validateRequest(req, paymentSchema);
   if (error) {
-    return new Response(JSON.stringify({ error }), {
-      headers: { "Content-Type": "application/json" },
-      status: error.status,
-    });
+    return Response.json({ error }, { status: error.status });
   }
 
   if (data) {
-    const { amount, paymentMethodId } = data;
+    const { paymentMethodId, amount } = data;
     try {
+      // Use an existing Customer ID if this is a returning customer.
       const customer = await stripe.customers.create();
 
       const ephemeralKey = await stripe.ephemeralKeys.create(
@@ -35,31 +33,21 @@ export async function POST(req: Request) {
         automatic_payment_methods: { enabled: true },
       });
 
-      return new Response(
-        JSON.stringify({
-          clientSecret: paymentIntent.client_secret,
-          ephemeralKey: ephemeralKey.secret,
-          customer: customer.id,
-          publishableKey: process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-        }),
-        {
-          headers: { "Content-Type": "application/json" },
-          status: 200,
-        }
-      );
+      return Response.json({
+        clientSecret: paymentIntent.client_secret,
+        ephemeralKey: ephemeralKey.secret,
+        customerId: customer.id,
+        publishableKey: process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+      });
     } catch (error: any) {
-      console.error("Payment error:", error);
-      return new Response(
-        JSON.stringify({
+      return Response.json(
+        {
           error: {
             status: 500,
             message: error.message || "Payment error",
           },
-        }),
-        {
-          headers: { "Content-Type": "application/json" },
-          status: 500,
-        }
+        },
+        { status: 500 }
       );
     }
   }
